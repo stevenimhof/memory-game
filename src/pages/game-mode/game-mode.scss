@@ -1,0 +1,17 @@
+page-game-mode {
+	.wrapper {
+		height:100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		.inner {
+			width: 100%;
+		}
+	}
+
+	.button {
+		width: 100%;
+		padding: 30px;
+		font-size: 200%;
+	}
+}
