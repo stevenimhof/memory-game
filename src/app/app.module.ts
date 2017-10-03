@@ -8,7 +8,8 @@ import { GameModePage } from '../pages/game-mode/game-mode';
 import { HomePage } from '../pages/home/home';
 import { GamePage } from '../pages/game/game';
 
-import { MemoryCard } from '../components/card/memory-card';
+import { Game } from '../components/game/game';
+import { MemoryCard } from '../components/game/card/memory-card';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -20,6 +21,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     GameModePage,
     HomePage,
     GamePage,
+    Game,
     MemoryCard
   ],
   imports: [
@@ -37,6 +39,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   providers: [
     StatusBar,
     SplashScreen,
+    Game,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
