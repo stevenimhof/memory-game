@@ -1,22 +1,23 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { NavController } from 'ionic-angular';
-
-//import { Game } from '../../providers/memory-game/game';
 
 @Component({
   selector: 'memory-card',
   templateUrl: 'memory-card.html'
 })
 export class MemoryCard {
-  @Input() content;
-  isFlipped = false;
+  @Input() info;
+  @Output() flipEvent = new EventEmitter();
 
   constructor(public navCtrl: NavController) {
 
   }
 
   flip = function() {
-    this.isFlipped = !this.isFlipped;
+    if (!this.info.isFlipped) {
+      this.info.isFlipped = true;
+      this.flipEvent.emit(this.info);
+    }
 	};
 
 }

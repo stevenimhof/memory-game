@@ -3,7 +3,7 @@
 <div class="container">
   <div class="row" *ngFor="let item1 of getBoard(); let i = index">
     <div class="square" *ngFor="let item2 of getBoard()[i]; let j = index">
-      <memory-card [content]="getBoard()[i][j]"></memory-card>
+      <memory-card (flipEvent)="flipEvent($event)" [info]="getBoard()[i][j]"></memory-card>
     </div>
   </div>
 </div>

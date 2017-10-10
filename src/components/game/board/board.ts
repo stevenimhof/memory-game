@@ -1,4 +1,6 @@
 
+const CARD_NAMES = ['A', 'B', 'C', 'D', 'E', 'F'];
+
 export class Board {
   private board = [];
 
@@ -11,14 +13,19 @@ export class Board {
   }
 
   private generateBoard() {
-    let symbols = ['A', 'B', 'C', 'D', 'E', 'F'];
-    symbols = symbols.concat(symbols);
-    this.shuffle(symbols);
+    let cardNames = CARD_NAMES.concat(CARD_NAMES);
+    let cards = cardNames.map(n => ({
+        name: n,
+        isFlipped: false
+        //url: `${environment.deployUrl}assets/${n}.png`
+    }));
+
+    this.shuffle(cards);
     for(let i = 0; i < 3; i++) {
       this.board[i] = [];
       for (let j = 0; j < 4; j++) {
-        this.board[i][j] = symbols[0];
-        symbols.shift();
+        this.board[i][j] = cards[0];
+        cards.shift();
       }
     }
   }

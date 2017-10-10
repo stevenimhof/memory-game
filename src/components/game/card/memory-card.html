@@ -1,10 +1,10 @@
-<div class="tile flip-container" [class.flip]="isFlipped" (click)="flip()">
+<div class="tile flip-container" [class.flip]="info.isFlipped" (click)="flip()">
   <div class="flipper">
     <div class="front">
       front
     </div>
     <div class="back">
-      {{ content }}
+      {{ info.name }}
     </div>
   </div>
 </div>
