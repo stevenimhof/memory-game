@@ -1,5 +1,16 @@
 page-game {
 
+  .overlay {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    z-index: 10;
+  }
+
+  .status {
+    padding: 20px;
+  }
+
   .container {
     position: absolute;
     top: 0;
