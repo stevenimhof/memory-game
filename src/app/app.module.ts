@@ -16,24 +16,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { AppPreferences } from '@ionic-native/app-preferences';
 
-class AppPreferencesMock extends AppPreferences {
-
-  storage = {difficulty: 2}
-
-  fetch(key) {
-    return new Promise((resolve, reject) => {
-      resolve(this.storage.difficulty);
-    })
-  }
-
-  store(key, value){
-    return new Promise((resolve, reject) => {
-      this.storage.difficulty = parseInt(value);
-      resolve(this.storage.difficulty);
-    })
-  }
-}
-
 @NgModule({
   declarations: [
     MyApp,
@@ -59,7 +41,7 @@ class AppPreferencesMock extends AppPreferences {
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: AppPreferences, useClass: AppPreferencesMock},
+    AppPreferences,
     Game,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]

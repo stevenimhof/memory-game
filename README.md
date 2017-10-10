@@ -1,7 +1,7 @@
-Ionic App Base
+Memory Game
 =====================
 
-This is the base template for Ionic starter apps.
+This is the memory game
 
 ## Using this project
 
@@ -14,7 +14,14 @@ $ npm install -g ionic
 Then run:
 
 ```bash
-$ ionic start myApp
+$ ionic cordova run <PLATFORM> --livereload
+```
+
+Supported Platforms:
+```
+* Android (use 'browser')
+* Browser (use 'android')
+
 ```
 
 More info on this can be found on the Ionic [Getting Started](http://ionicframework.com/docs/v2/getting-started/) page.

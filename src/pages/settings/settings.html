@@ -17,6 +17,16 @@
         <ion-label range-right>Hard</ion-label>
       </ion-range>
     </ion-item>
+
+    <ion-list-header>
+      Field size  
+    </ion-list-header>
+    <ion-item>
+      <ion-range min="4" max="12" step="2" snaps="true" [(ngModel)]="size" (ngModelChange)="onSizeChange()">
+        <ion-label range-left >4x4</ion-label>
+        <ion-label range-right>12x12</ion-label>
+      </ion-range>
+    </ion-item>
   </ion-list>
 </ion-content>
 
