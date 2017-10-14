@@ -14,6 +14,8 @@ import { MemoryCard } from '../components/game/card/memory-card';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+import { AppPreferences } from '@ionic-native/app-preferences';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -39,6 +41,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   providers: [
     StatusBar,
     SplashScreen,
+    AppPreferences,
     Game,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
