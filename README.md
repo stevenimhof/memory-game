@@ -19,8 +19,8 @@ $ ionic cordova run <PLATFORM> --livereload
 
 Supported Platforms:
 ```
-* Android (use 'browser')
-* Browser (use 'android')
+* Android (use 'android')
+* Browser (use 'browser')
 
 ```
 

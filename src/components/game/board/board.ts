@@ -1,10 +1,12 @@
 
-const CARD_NAMES = ['A', 'B', 'C', 'D', 'E', 'F'];
+const CARD_NAMES = 'abcdefghijklmnopqrstuvwxyz'.split('');
 
 export class Board {
   private board = [];
+  private size;
 
-  constructor() {
+  constructor(size) {
+    this.size = size;
     this.generateBoard();
   }
 
@@ -13,7 +15,8 @@ export class Board {
   }
 
   private generateBoard() {
-    let cardNames = CARD_NAMES.concat(CARD_NAMES);
+    let usedCards = CARD_NAMES.filter((i, index) => (index < (this.size[0]*this.size[1])/2));
+    let cardNames = usedCards.concat(usedCards);
     let cards = cardNames.map(n => ({
         name: n,
         isFlipped: false
@@ -21,13 +24,15 @@ export class Board {
     }));
 
     this.shuffle(cards);
-    for(let i = 0; i < 3; i++) {
+    for(let i = 0; i < this.size[0]; i++) {
       this.board[i] = [];
-      for (let j = 0; j < 4; j++) {
+      for (let j = 0; j < this.size[1]; j++) {
         this.board[i][j] = cards[0];
         cards.shift();
       }
     }
+
+    console.log(this.board);
   }
 
   private shuffle(a) {

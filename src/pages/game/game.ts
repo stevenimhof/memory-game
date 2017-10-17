@@ -4,6 +4,8 @@ import { HomePage } from '../home/home';
 
 import { Game } from '../../components/game/game';
 
+import { AppPreferences } from '@ionic-native/app-preferences';
+
 
 @Component({
   selector: 'page-game',
@@ -13,8 +15,8 @@ import { Game } from '../../components/game/game';
 export class GamePage {
   game: Game;
 
-  constructor(public navCtrl: NavController) {
-    this.initGame();
+  constructor(public navCtrl: NavController, private appPreferences: AppPreferences) {
+    this.initGame()
   }
 
   public quitGame() {
@@ -25,7 +27,7 @@ export class GamePage {
 
   public initGame() {
     //let board = new Board();
-		this.game = new Game();
+		this.game = new Game(this.appPreferences);
     //this.game.setBoard(board);
 		//board.addBoardChangeListener(this);
 		//this.game.addGameStateChangeListener(this);
