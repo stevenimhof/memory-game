@@ -5,6 +5,7 @@ import { Player } from './player';
 //import { BoardChangeListener } from '../../providers/memory-game/boardChangeListener';
 import { GameStateChangeListener } from '../../providers/memory-game/gameStateChangeListener';
 
+
 @Component({
   selector: 'game',
   templateUrl: 'game.html'

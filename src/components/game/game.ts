@@ -3,6 +3,7 @@ import { Board } from './board/board';
 import { Observable } from "rxjs";
 import { HumanPlayer } from './player/humanPlayer';
 import { ComputerPlayer } from './player/computerPlayer';
+import { AppPreferences } from '@ionic-native/app-preferences';
 
 @Component({
   selector: 'game',
@@ -13,15 +14,22 @@ export class Game {
   private board;
   private currentOpenCards = [];
   private cardStack = [];
-  private leftCards = 12; // needs to be dynamic - change after adding settings
+  private boardSize = 8
+  private leftCards = 8
   private players = [];
   private currentPlayerIndex = 0;
   private boardOverlay = false;
 
-  constructor() {
-    this.board = new Board();
-    this.players.push(new HumanPlayer('Player 1', this.board));
-    this.players.push(new ComputerPlayer('Player 2', this.board));
+  constructor(private appPreferences: AppPreferences) {
+    this.appPreferences.fetch('size').then((res) => { 
+      if(res != null){
+        this.boardSize = parseInt(res);
+      }
+      this.board = new Board(this.boardSize);
+      this.leftCards = this.boardSize
+      this.players.push(new HumanPlayer('Player 1', this.board));
+      this.players.push(new ComputerPlayer('Player 2', this.board));
+    });
   }
 
   public getBoard() {
@@ -180,8 +188,8 @@ export class Game {
 
   private getCardByIndex(index) {
     let currentIndex = 0;
-    for(let i = 0; i < 3; i++) {
-      for (let j = 0; j < 4; j++) {
+    for(let i = 0; i < this.boardSize / 2; i++) {
+      for (let j = 0; j < this.boardSize / 2; j++) {
         currentIndex++;
         if (currentIndex === index) {
           return this.getBoard()[i][j];

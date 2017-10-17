@@ -3,8 +3,8 @@ export class Board {
   private board = [];
   private listeners = [];
 
-  constructor() {
-    this.generateBoard();
+  constructor(size) {
+    this.generateBoard(size);
   }
 
   public getBoard() {
@@ -15,13 +15,13 @@ export class Board {
 		this.listeners.push(ui);
 	}
 
-  private generateBoard() {
-    let symbols = ['A', 'B', 'C', 'D', 'E', 'F'];
+  private generateBoard(size) {
+    let symbols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
     symbols = symbols.concat(symbols);
     this.shuffle(symbols);
-    for(let i = 0; i < 3; i++) {
+    for(let i = 0; i < size/2; i++) {
       this.board[i] = [];
-      for (let j = 0; j < 4; j++) {
+      for (let j = 0; j < size/2; j++) {
         this.board[i][j] = symbols[0];
         symbols.shift();
       }
