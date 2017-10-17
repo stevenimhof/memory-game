@@ -21,6 +21,7 @@
     <ion-list-header>
       Field size
     </ion-list-header>
+<<<<<<< HEAD
 
     <ion-list radio-group [(ngModel)]="size" (ngModelChange)="onSizeChange()">
       <ion-item *ngFor="let size of getSizeConverter(); let i = index">
@@ -29,6 +30,14 @@
       </ion-item>
     </ion-list>
 
+=======
+    <ion-item>
+      <ion-range min="4" max="12" step="2" snaps="true" [(ngModel)]="size" (ngModelChange)="onSizeChange()">
+        <ion-label range-left >2x2</ion-label>
+        <ion-label range-right>6x6</ion-label>
+      </ion-range>
+    </ion-item>
+>>>>>>> 1ce42ab42433b88f8585afb4738dd9fdad526ef4
   </ion-list>
 </ion-content>
 
