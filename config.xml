@@ -82,12 +82,9 @@
         <splash height="480" src="resources/ios/splash/Default~iphone.png" width="320" />
         <splash height="2732" src="resources/ios/splash/Default@2x~universal~anyany.png" width="2732" />
     </platform>
-<<<<<<< HEAD
-=======
     <allow-navigation href="http://160.85.148.38:8100" />
     <allow-navigation href="http://192.168.86.190:8100" />
     <allow-navigation href="http://192.168.86.196:8100" />
->>>>>>> 1ce42ab42433b88f8585afb4738dd9fdad526ef4
     <engine name="android" spec="^6.2.3" />
     <engine name="browser" spec="^4.1.0" />
     <plugin name="cordova-plugin-app-preferences" spec="^0.99.3" />

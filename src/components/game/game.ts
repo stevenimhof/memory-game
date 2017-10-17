@@ -4,10 +4,7 @@ import { Observable } from "rxjs";
 import { HumanPlayer } from './player/humanPlayer';
 import { ComputerPlayer } from './player/computerPlayer';
 import { AppPreferences } from '@ionic-native/app-preferences';
-<<<<<<< HEAD
 import { sizeConverter } from '../../pages/settings/sizeConveter';
-=======
->>>>>>> 1ce42ab42433b88f8585afb4738dd9fdad526ef4
 
 @Component({
   selector: 'game',
@@ -18,19 +15,13 @@ export class Game {
   private board;
   private currentOpenCards = [];
   private cardStack = [];
-<<<<<<< HEAD
   private boardSize = sizeConverter[0];
   private leftCards;
-=======
-  private boardSize = 8
-  private leftCards = 8
->>>>>>> 1ce42ab42433b88f8585afb4738dd9fdad526ef4
   private players = [];
   private currentPlayerIndex = 0;
   private boardOverlay = false;
 
   constructor(private appPreferences: AppPreferences) {
-<<<<<<< HEAD
     this.appPreferences.fetch('size').then((res) => {
       if(res != null){
         this.boardSize = sizeConverter[parseInt(res)];
@@ -38,14 +29,7 @@ export class Game {
 
       this.board = new Board(this.boardSize);
       this.leftCards = this.boardSize;
-=======
-    this.appPreferences.fetch('size').then((res) => { 
-      if(res != null){
-        this.boardSize = parseInt(res);
-      }
-      this.board = new Board(this.boardSize);
-      this.leftCards = this.boardSize
->>>>>>> 1ce42ab42433b88f8585afb4738dd9fdad526ef4
+
       this.players.push(new HumanPlayer('Player 1', this.board));
       this.players.push(new ComputerPlayer('Player 2', this.board));
     });
@@ -207,13 +191,8 @@ export class Game {
 
   private getCardByIndex(index) {
     let currentIndex = 0;
-<<<<<<< HEAD
     for(let i = 0; i < this.boardSize[0]; i++) {
       for (let j = 0; j < this.boardSize[1]; j++) {
-=======
-    for(let i = 0; i < this.boardSize / 2; i++) {
-      for (let j = 0; j < this.boardSize / 2; j++) {
->>>>>>> 1ce42ab42433b88f8585afb4738dd9fdad526ef4
         currentIndex++;
         if (currentIndex === index) {
           return this.getBoard()[i][j];
