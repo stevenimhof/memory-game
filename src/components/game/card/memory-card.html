@@ -1,10 +1,10 @@
 <div class="tile flip-container" [class.flip]="info.isFlipped" (click)="flip()">
   <div class="flipper">
     <div class="front">
-      front
+      <img src="/assets/img/front.svg" />
     </div>
     <div class="back">
-      {{ info.name }}
+      <img [src]="info.url" />
     </div>
   </div>
 </div>
