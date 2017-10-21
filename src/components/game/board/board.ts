@@ -19,8 +19,8 @@ export class Board {
     let cardNames = usedCards.concat(usedCards);
     let cards = cardNames.map(n => ({
         name: n,
-        isFlipped: false
-        //url: `${environment.deployUrl}assets/${n}.png`
+        isFlipped: false,
+        url: `/assets/img/${n}.svg`
     }));
 
     this.shuffle(cards);
