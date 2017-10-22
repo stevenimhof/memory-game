@@ -28,7 +28,8 @@ export class Game {
       }
 
       this.board = new Board(this.boardSize);
-      this.leftCards = this.boardSize;
+      this.leftCards = this.boardSize[0] * this.boardSize[1];
+      console.log("left cards: " + this.leftCards);
 
       this.players.push(new HumanPlayer('Player 1', this.board));
       this.players.push(new ComputerPlayer('Player 2', this.board));
@@ -57,6 +58,7 @@ export class Game {
       if (this.cardStack[0].name === this.cardStack[1].name) {
         // we have a match
         this.leftCards -= 2;
+        console.log("left cards: " + this.leftCards);
         this.increaseScoreOfCurrentPlayer();
 
         if (this.leftCards === 0) {
