@@ -5,6 +5,7 @@ import { HumanPlayer } from './player/humanPlayer';
 import { ComputerPlayer } from './player/computerPlayer';
 import { AppPreferences } from '@ionic-native/app-preferences';
 import { sizeConverter } from '../../pages/settings/sizeConveter';
+import { AlertController } from 'ionic-angular';
 
 @Component({
   selector: 'game',
@@ -18,18 +19,16 @@ export class Game {
   private boardSize = sizeConverter[0];
   private leftCards;
   private players = [];
-  private currentPlayerIndex = 0;
+  private currentPlayerIndex;
   private boardOverlay = false;
 
-  constructor(private appPreferences: AppPreferences) {
+  constructor(private appPreferences: AppPreferences, public alertCtrl: AlertController) {
     this.appPreferences.fetch('size').then((res) => {
       if(res != null){
         this.boardSize = sizeConverter[parseInt(res)];
       }
 
-      this.board = new Board(this.boardSize);
-      this.leftCards = this.boardSize[0] * this.boardSize[1];
-      console.log("left cards: " + this.leftCards);
+      this.resetGame();
 
       this.players.push(new HumanPlayer('Player 1', this.board));
       this.players.push(new ComputerPlayer('Player 2', this.board));
@@ -156,11 +155,25 @@ export class Game {
   }*/
 
   private announceResult() {
+    var title, text;
     if (this.hasWinner()) {
-      console.log('winner is ' + this.getWinner().getName());
+      title = 'Winner';
+      text = 'The winner is ' + this.getWinner().getName();
     } else {
-      console.log('its a draw');
+      title = 'Draw'
+      text = 'It\'s a draw';
     }
+    const alert = this.alertCtrl.create({
+      title: title,
+      subTitle: text,
+      buttons: [{
+        text: 'New game',
+        handler: () => {
+          this.resetGame();
+        }
+      }]
+    });
+    alert.present();
   }
 
   private changeCurrentPlayer() {
@@ -215,5 +228,10 @@ export class Game {
     this.boardOverlay = flag;
   }
 
+  private resetGame() {
+    this.board = new Board(this.boardSize);
+    this.leftCards = this.boardSize[0] * this.boardSize[1];
+    this.currentPlayerIndex = 0;
+  }
 
 }
