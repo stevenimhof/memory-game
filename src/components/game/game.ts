@@ -29,9 +29,6 @@ export class Game {
       }
 
       this.resetGame();
-
-      this.players.push(new HumanPlayer('Player 1', this.board));
-      this.players.push(new ComputerPlayer('Player 2', this.board));
     });
   }
 
@@ -232,6 +229,9 @@ export class Game {
     this.board = new Board(this.boardSize);
     this.leftCards = this.boardSize[0] * this.boardSize[1];
     this.currentPlayerIndex = 0;
+    this.players = [];
+    this.players.push(new HumanPlayer('Player 1', this.board));
+    this.players.push(new ComputerPlayer('Player 2', this.board));
   }
 
 }

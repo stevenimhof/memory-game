@@ -13,6 +13,9 @@ page-game {
     border-radius: 7px;
     margin: 10px 10px 0px;
     border: 1px solid #ccc;
+    .is-active {
+      font-weight: bold;
+    }
   }
 
   .container {
@@ -89,4 +92,11 @@ page-game {
       padding: 5px;
     }
   }
+}
+
+.left {
+  float: left;
+}
+.right {
+  float: right;
 }
