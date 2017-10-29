@@ -15,7 +15,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { AppPreferences } from '@ionic-native/app-preferences';
-import { SweetAlertService } from 'angular-sweetalert-service';
 
 @NgModule({
   declarations: [
@@ -44,7 +43,6 @@ import { SweetAlertService } from 'angular-sweetalert-service';
     SplashScreen,
     AppPreferences,
     Game,
-    SweetAlertService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
