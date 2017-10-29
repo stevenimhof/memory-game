@@ -39,10 +39,6 @@ export class Game {
     return this.board.getBoard();
   }
 
-  private play() {
-    this.getCurrentPlayer().makeMove();
-  }
-
   public flipEvent($event) {
     // busy wait - don't accept flip events during another flip event
     while(this.getBoardOverlay() === true) {}
@@ -182,7 +178,10 @@ export class Game {
   }
 
   private resetGame() {
+    console.log('reseting board');
+    console.log(this.board);
     this.board = new Board(this.boardSize);
+    console.log(this.board);
     this.leftCards = this.boardSize[0] * this.boardSize[1];
     this.currentPlayerIndex = 0;
     this.createPlayers();

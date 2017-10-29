@@ -1,10 +1,10 @@
 <div class="tile flip-container" [class.flip]="info.isFlipped" [ngClass]="{'hidden': info.isHidden == true }" (click)="flip()">
   <div class="flipper">
     <div class="front">
-      <ion-img src="./assets/img/front.svg" ></ion-img>
+      <img src="./assets/img/front.svg" />
     </div>
     <div class="back">
-      <ion-img [src]="info.url" ></ion-img>
+      <img [src]="info.url" />
     </div>
   </div>
 </div>
