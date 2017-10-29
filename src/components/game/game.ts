@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Board } from './board/board';
 import { Observable } from "rxjs";
 import { HumanPlayer } from './player/humanPlayer';
@@ -13,8 +13,8 @@ import { AlertController } from 'ionic-angular';
 })
 
 export class Game {
-  private board;
-  private currentOpenCards = [];
+  @Input() mode;
+  private board = null;
   private cardStack = [];
   private boardSize = sizeConverter[0];
   private leftCards;
@@ -26,6 +26,9 @@ export class Game {
     this.appPreferences.fetch('size').then((res) => {
       if(res != null){
         this.boardSize = sizeConverter[parseInt(res)];
+      } else {
+        // set default size
+        this.boardSize = sizeConverter[0];
       }
 
       this.resetGame();
@@ -52,17 +55,21 @@ export class Game {
     if (this.cardStack.length === 2) {
 
       if (this.cardStack[0].name === this.cardStack[1].name) {
-        // we have a match
-        this.leftCards -= 2;
-        console.log("left cards: " + this.leftCards);
-        this.increaseScoreOfCurrentPlayer();
+        Observable.timer(1000).subscribe(i => {
+          this.cardStack[0].isHidden = true;
+          this.cardStack[1].isHidden = true;
+          // we have a match
+          this.leftCards -= 2;
+          console.log("left cards: " + this.leftCards);
+          this.increaseScoreOfCurrentPlayer();
 
-        if (this.leftCards === 0) {
-          this.announceResult();
-        }
+          if (this.leftCards === 0) {
+            this.announceResult();
+          }
 
-        this.cardStack = [];
-        this.setBoardOverlay(false);
+          this.cardStack = [];
+          this.setBoardOverlay(false);
+        });
       } else {
         // pair does not match
         Observable.timer(1000).subscribe(i => {
@@ -99,57 +106,6 @@ export class Game {
       this.setBoardOverlay(false);
     }
   }
-
-  /*public flipEvent___old($event) {
-
-    // busy wait
-    while(this.getBoardOverlay() === true) {}
-
-    this.setBoardOverlay(true);
-
-    this.currentOpenCards.push($event);
-    console.log(this.currentOpenCards.length);
-    if (this.currentOpenCards.length === 2) {
-
-      // if current player is com then make a random move
-      if (this.getCurrentPlayer() instanceof ComputerPlayer) {
-        let index = this.getCurrentPlayer().getMove();
-        let card = this.getCardByIndex(index);
-        console.log(card);
-        Observable.timer(1000).subscribe(i => {
-          this.currentOpenCards.push(card);
-          console.log(this.currentOpenCards);
-          this.flipCard(card);
-          this.setBoardOverlay(false);
-        });
-      }
-
-      if (this.currentOpenCards[0].name === this.currentOpenCards[1].name) {
-        // we have a match
-        this.leftCards -= 2;
-        this.increaseScoreOfCurrentPlayer();
-
-        if (this.leftCards === 0) {
-          this.announceResult();
-        }
-
-        this.currentOpenCards = [];
-      } else {
-        // wrong pair
-        Observable.timer(1000).subscribe(i => {
-          this.currentOpenCards[0].isFlipped = false;
-          this.currentOpenCards[1].isFlipped = false;
-          this.currentOpenCards = [];
-          this.changeCurrentPlayer();
-          this.setBoardOverlay(false);
-        });
-      }
-    } else {
-      this.setBoardOverlay(false);
-    }
-
-    console.log(this.getBoardOverlay());
-  }*/
 
   private announceResult() {
     var title, text;
@@ -229,9 +185,19 @@ export class Game {
     this.board = new Board(this.boardSize);
     this.leftCards = this.boardSize[0] * this.boardSize[1];
     this.currentPlayerIndex = 0;
+    this.createPlayers();
+  }
+
+  private createPlayers() {
     this.players = [];
-    this.players.push(new HumanPlayer('Player 1', this.board));
-    this.players.push(new ComputerPlayer('Player 2', this.board));
+    console.log(this.mode);
+    if(this.mode == 'pvp') {
+      this.players.push(new HumanPlayer('Player 1', this.board));
+      this.players.push(new HumanPlayer('Player 2', this.board));
+    } else {
+      this.players.push(new HumanPlayer('Player 1', this.board));
+      this.players.push(new ComputerPlayer('Com', this.board));
+    }
   }
 
 }

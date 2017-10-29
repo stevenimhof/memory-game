@@ -10,7 +10,6 @@ export class MemoryCard {
   @Output() flipEvent = new EventEmitter();
 
   constructor(public navCtrl: NavController) {
-
   }
 
   flip = function() {
@@ -19,5 +18,9 @@ export class MemoryCard {
       this.flipEvent.emit(this.info);
     }
 	};
+
+  private hide() {
+    this.info.isHidden = true;
+  }
 
 }

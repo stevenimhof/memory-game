@@ -39,11 +39,19 @@ memory-card {
   	top: 0;
   	left: 0;
     border-radius: 7px;
-    img {
-      max-height: 100%;
-      max-width: 100%;
+    ion-img {
+      display: block;
       height: 100%;
-      padding: 20%;
+      contain: initial;
+      background-color: transparent;
+      img {
+        max-height: 100%;
+        max-width: 100%;
+        height: 100%;
+        width: 100%;
+        padding: 20%;
+        object-fit: initial;
+      }
     }
   }
 

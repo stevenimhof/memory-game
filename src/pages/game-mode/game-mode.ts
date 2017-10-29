@@ -13,8 +13,10 @@ export class GameModePage {
 
   }
 
-  goToGame(modus) {
-  	this.navCtrl.setRoot(GamePage);
+  goToGame(mode) {
+  	this.navCtrl.setRoot(GamePage, {
+      mode: mode
+    });
   }
 
 }

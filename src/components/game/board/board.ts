@@ -2,10 +2,11 @@
 const CARD_NAMES = 'abcdefghijklmnopqrstuvwxyz'.split('');
 
 export class Board {
-  private board = [];
+  private board;
   private size;
 
   constructor(size) {
+    this.board = [];
     this.size = size;
     this.generateBoard();
   }
@@ -20,7 +21,7 @@ export class Board {
     let cards = cardNames.map(n => ({
         name: n,
         isFlipped: false,
-        url: `/assets/img/${n}.svg`
+        url: `./assets/img/${n}.svg`
     }));
 
     this.shuffle(cards);

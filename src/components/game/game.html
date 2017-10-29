@@ -1,14 +1,16 @@
 
 <div class="overlay" *ngIf="boardOverlay"></div>
 <div class="container">
-  <div class="status">
+  <div class="status" *ngIf="players.length">
     <div class="left" [ngClass]="{'is-active': currentPlayerIndex == 0 }">{{ players[0].name }}: {{ players[0].score }} Punkte</div>
     <div class="right" [ngClass]="{'is-active': currentPlayerIndex == 1 }">{{ players[1].name }}: {{ players[1].score }} Punkte</div>
   </div>
 
-  <div class="row" [ngClass]="{'first': i == 0 }" *ngFor="let item1 of getBoard(); let i = index">
-    <div class="square" *ngFor="let item2 of getBoard()[i]; let j = index">
-      <memory-card (flipEvent)="flipEvent($event)" [info]="getBoard()[i][j]"></memory-card>
+  <ng-container *ngIf="board">
+    <div class="row" [ngClass]="{'first': i == 0 }" *ngFor="let item1 of getBoard(); let i = index">
+      <div class="square" *ngFor="let item2 of getBoard()[i]; let j = index">
+        <memory-card (flipEvent)="flipEvent($event)" [info]="getBoard()[i][j]"></memory-card>
+      </div>
     </div>
-  </div>
+  </ng-container>
 </div>

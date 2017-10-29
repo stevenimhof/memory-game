@@ -92,11 +92,21 @@ page-game {
       padding: 5px;
     }
   }
-}
 
-.left {
-  float: left;
-}
-.right {
-  float: right;
+  .left {
+    float: left;
+  }
+  .right {
+    float: right;
+  }
+
+  memory-card .tile {
+    opacity: 1;
+    transition: opacity 0.6s linear;
+  }
+  memory-card .tile.hidden {
+    opacity: .3;
+    transition: opacity 0.6s linear;
+  }
+
 }
