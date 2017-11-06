@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChildren, QueryList } from '@angular/core';
 import { Board } from './board/board';
 import { Observable } from "rxjs";
 import { HumanPlayer } from './player/humanPlayer';
@@ -6,6 +6,7 @@ import { ComputerPlayer } from './player/computerPlayer';
 import { AppPreferences } from '@ionic-native/app-preferences';
 import { sizeConverter } from '../../pages/settings/sizeConveter';
 import { AlertController } from 'ionic-angular';
+import { MemoryCard } from './card/memory-card';
 
 @Component({
   selector: 'game',
@@ -13,6 +14,7 @@ import { AlertController } from 'ionic-angular';
 })
 
 export class Game {
+  @ViewChildren(MemoryCard) cards: QueryList<MemoryCard>;
   @Input() mode;
   private board = null;
   private cardStack = [];
@@ -39,7 +41,7 @@ export class Game {
     return this.board.getBoard();
   }
 
-  public flipEvent($event) {
+  public flipEventCardToGame($event) {
     // busy wait - don't accept flip events during another flip event
     while(this.getBoardOverlay() === true) {}
     this.setBoardOverlay(true);
@@ -54,9 +56,9 @@ export class Game {
         Observable.timer(1000).subscribe(i => {
           this.cardStack[0].isHidden = true;
           this.cardStack[1].isHidden = true;
+
           // we have a match
           this.leftCards -= 2;
-          console.log("left cards: " + this.leftCards);
           this.increaseScoreOfCurrentPlayer();
 
           if (this.leftCards === 0) {
@@ -76,31 +78,65 @@ export class Game {
           this.setBoardOverlay(false);
 
           //is com turn?
-          /*console.log(this.getCurrentPlayer());
           if (this.getCurrentPlayer() instanceof ComputerPlayer) {
-            this.setBoardOverlay(true);
-
-            var index = this.getCurrentPlayer().getMove();
-            var card = this.getCardByIndex(index);
-            Observable.timer(1000).subscribe(i => {
-              this.flipCard(card);
-
-              index = this.getCurrentPlayer().getMove();
-              card = this.getCardByIndex(index);
-
-              Observable.timer(1000).subscribe(i => {
-                this.flipCard(card);
-                this.setBoardOverlay(false);
-              });
-            });
-          }*/
-
+            this.makeComputerMove();
+          }
         });
       }
 
     } else {
       this.setBoardOverlay(false);
     }
+  }
+
+  private makeComputerMove() {
+    this.setBoardOverlay(true);
+
+    var index = this.getCurrentPlayer().getMove();
+    Observable.timer(1000).subscribe(i => {
+      this.cards.toArray()[index].setIsFlippedStatus(true);
+      this.cardStack.push(this.cards.toArray()[index].info);
+
+      Observable.timer(1000).subscribe(i => {
+        var index = this.getCurrentPlayer().getMove();
+        this.cards.toArray()[index].setIsFlippedStatus(true);
+        this.cardStack.push(this.cards.toArray()[index].info);
+
+        // we have 2 open cards
+        if (this.cardStack.length === 2) {
+
+          if (this.cardStack[0].name === this.cardStack[1].name) {
+            Observable.timer(1000).subscribe(i => {
+              this.cardStack[0].isHidden = true;
+              this.cardStack[1].isHidden = true;
+
+              // we have a match
+              this.leftCards -= 2;
+              this.increaseScoreOfCurrentPlayer();
+
+              if (this.leftCards === 0) {
+                this.announceResult();
+                this.setBoardOverlay(true);
+              } else {
+                this.cardStack = [];
+                this.makeComputerMove();
+              }
+
+            });
+          } else {
+            // pair does not match
+            Observable.timer(1000).subscribe(i => {
+              this.cardStack[0].isFlipped = false;
+              this.cardStack[1].isFlipped = false;
+              this.cardStack = [];
+              this.changeCurrentPlayer();
+              this.setBoardOverlay(false);
+            });
+          }
+        } else {
+        }
+      });
+    });
   }
 
   private announceResult() {
@@ -153,7 +189,7 @@ export class Game {
     return winner;
   }
 
-  private getCardByIndex(index) {
+  /*private getCardByIndex(index) {
     let currentIndex = 0;
     for(let i = 0; i < this.boardSize[0]; i++) {
       for (let j = 0; j < this.boardSize[1]; j++) {
@@ -163,11 +199,11 @@ export class Game {
         }
       }
     }
-  }
+  }*/
 
-  private flipCard(card) {
+  /*private flipCard(card) {
     card.isFlipped = true;
-  }
+  }*/
 
   private getBoardOverlay() {
     return this.boardOverlay;
@@ -178,10 +214,10 @@ export class Game {
   }
 
   private resetGame() {
-    console.log('reseting board');
-    console.log(this.board);
     this.board = new Board(this.boardSize);
-    console.log(this.board);
+    this.boardOverlay = false;
+    this.cardStack = [];
+    
     this.leftCards = this.boardSize[0] * this.boardSize[1];
     this.currentPlayerIndex = 0;
     this.createPlayers();
@@ -189,7 +225,6 @@ export class Game {
 
   private createPlayers() {
     this.players = [];
-    console.log(this.mode);
     if(this.mode == 'pvp') {
       this.players.push(new HumanPlayer('Player 1', this.board));
       this.players.push(new HumanPlayer('Player 2', this.board));

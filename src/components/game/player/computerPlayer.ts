@@ -6,14 +6,21 @@ export class ComputerPlayer extends Player {
   }
 
   public getMove() {
-    let movedCardIndex = 0;
+    return this.getRandomMove();
+  }
+
+  private getRandomMove() {
+    var indexes = [];
+    var movedCardIndex = 0;
     for(let i = 0; i < 3; i++) {
       for (let j = 0; j < 4; j++) {
         if (!this.getBoard()[i][j].isFlipped) {
-          movedCardIndex++;
+          indexes.push(movedCardIndex);
         }
+        movedCardIndex++;
       }
     }
-    return movedCardIndex;
+    return indexes[Math.floor(Math.random()*indexes.length)];
   }
+
 }

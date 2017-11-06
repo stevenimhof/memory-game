@@ -32,8 +32,6 @@ export class Board {
         cards.shift();
       }
     }
-
-    console.log(this.board);
   }
 
   private shuffle(a) {
@@ -42,4 +40,5 @@ export class Board {
       [a[i - 1], a[j]] = [a[j], a[i - 1]];
     }
   }
+
 }

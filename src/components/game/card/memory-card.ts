@@ -7,17 +7,21 @@ import { NavController } from 'ionic-angular';
 })
 export class MemoryCard {
   @Input() info;
-  @Output() flipEvent = new EventEmitter();
+  @Output() flipEventCardToGame = new EventEmitter();
 
   constructor(public navCtrl: NavController) {
   }
 
-  flip = function() {
+  public flip() {
     if (!this.info.isFlipped) {
       this.info.isFlipped = true;
-      this.flipEvent.emit(this.info);
+      this.flipEventCardToGame.emit(this.info);
     }
-	};
+	}
+
+  public setIsFlippedStatus(flag) {
+    this.info.isFlipped = flag;
+  }
 
   private hide() {
     this.info.isHidden = true;
