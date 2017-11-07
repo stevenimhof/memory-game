@@ -15,6 +15,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { AppPreferences } from '@ionic-native/app-preferences';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
+
 
 @NgModule({
   declarations: [
@@ -43,6 +45,7 @@ import { AppPreferences } from '@ionic-native/app-preferences';
     SplashScreen,
     AppPreferences,
     Game,
+    ScreenOrientation,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

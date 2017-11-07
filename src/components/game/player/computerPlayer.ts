@@ -32,19 +32,15 @@ export class ComputerPlayer extends Player {
       index = this.getKnownPairInStack(fullCardStack);
 
       if (index && index.length == 2) {
-        console.log("#######1a open known card"); // does not always work ?? mid game
         return index[0];
       } else {
-        console.log("#######1b open new card");
         return this.getMoveForNewCard(fullCardStack);
       }
     } else {
       index = this.getMissingKnownCard(fullCardStack, cardStack);
-      if(index) {
-        console.log("#######2a open known card"); // works
+      if(index !== false) {
         return index;
       } else {
-        console.log("#######2b open new card"); // works
         return this.getMoveForNewCard(fullCardStack);
       }
     }
@@ -83,10 +79,6 @@ export class ComputerPlayer extends Player {
   }
 
   private getMissingKnownCard(fullCardStack, stack) {
-    console.log("***");
-    console.log(fullCardStack);
-    console.log(stack);
-    console.log("***");
     for(let i = 0; i < fullCardStack.length; i++) {
       if (fullCardStack[i][1] == stack[0].name && fullCardStack[i][0] != stack[0].cardIndex) {
         return fullCardStack[i][0];

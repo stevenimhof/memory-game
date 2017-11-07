@@ -115,8 +115,6 @@ export class Game {
     }
 
     this.fullCardStack = this.prepareFullCardStack(this.fullCardStack);
-    console.log("stack");
-    console.log(this.fullCardStack);
   }
 
   private prepareFullCardStack(stack) {
