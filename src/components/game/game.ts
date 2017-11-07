@@ -5,6 +5,8 @@ import { HumanPlayer } from './player/humanPlayer';
 import { ComputerPlayer } from './player/computerPlayer';
 import { AppPreferences } from '@ionic-native/app-preferences';
 import { sizeConverter } from '../../pages/settings/sizeConveter';
+import { difficultyConverter } from '../../pages/settings/difficultyConveter';
+
 import { AlertController } from 'ionic-angular';
 import { MemoryCard } from './card/memory-card';
 
@@ -18,23 +20,30 @@ export class Game {
   @Input() mode;
   private board = null;
   private cardStack = [];
-  private boardSize = sizeConverter[0];
+  private boardSize = sizeConverter[1];
   private leftCards;
   private players = [];
   private currentPlayerIndex;
   private boardOverlay = false;
+  private difficulty = 0;
+  private fullCardStack = [];
+  private desiredStackSize = difficultyConverter[1];
 
   constructor(private appPreferences: AppPreferences, public alertCtrl: AlertController) {
     this.appPreferences.fetch('size').then((res) => {
       if(res != null){
         this.boardSize = sizeConverter[parseInt(res)];
-      } else {
-        // set default size
-        this.boardSize = sizeConverter[0];
       }
 
-      this.resetGame();
     });
+
+    this.appPreferences.fetch('difficulty').then((res) => {
+      if (res != null) {
+        this.difficulty = parseInt(res);
+        this.desiredStackSize = difficultyConverter[parseInt(res)];
+      }
+      this.resetGame();
+    })
   }
 
   public getBoard() {
@@ -48,24 +57,27 @@ export class Game {
 
     // push card to stack
     this.cardStack.push($event);
+    this.addToFullCardStack($event);
 
     // we have 2 open cards
     if (this.cardStack.length === 2) {
 
       if (this.cardStack[0].name === this.cardStack[1].name) {
+        // we have a match
         Observable.timer(1000).subscribe(i => {
           this.cardStack[0].isHidden = true;
           this.cardStack[1].isHidden = true;
 
-          // we have a match
           this.leftCards -= 2;
           this.increaseScoreOfCurrentPlayer();
 
           if (this.leftCards === 0) {
             this.announceResult();
+          } else {
+            this.removeCardsFromFullCardStack(this.cardStack[0].name);
+            this.cardStack = [];
           }
 
-          this.cardStack = [];
           this.setBoardOverlay(false);
         });
       } else {
@@ -89,18 +101,55 @@ export class Game {
     }
   }
 
+  private addToFullCardStack(card) {
+    /** bug: when checking for desired size later on, we're missing the correct order of the latest cards **/
+    var exists = false;
+    for(let i = 0; i < this.fullCardStack.length; i++) {
+      if (this.fullCardStack[i][0] == card.cardIndex && this.fullCardStack[i][1] == card.name) {
+        exists = true;
+      }
+    }
+
+    if (!exists) {
+      this.fullCardStack.push([card.cardIndex, card.name]);
+    }
+
+    this.fullCardStack = this.prepareFullCardStack(this.fullCardStack);
+    console.log("stack");
+    console.log(this.fullCardStack);
+  }
+
+  private prepareFullCardStack(stack) {
+    if (stack.length <= this.desiredStackSize) {
+      return stack;
+    }
+
+    return stack.slice(stack.length-this.desiredStackSize, stack.length);
+  }
+
+  private removeCardsFromFullCardStack(cardName) {
+    for(let i = this.fullCardStack.length-1; i >= 0; i--) {
+      if (this.fullCardStack[i][1] == cardName) {
+        this.fullCardStack.splice(i, 1);
+      }
+    }
+  }
+
   private makeComputerMove() {
     this.setBoardOverlay(true);
 
-    var index = this.getCurrentPlayer().getMove();
+    var index = this.getCurrentPlayer().getMove(this.fullCardStack, this.cardStack);
     Observable.timer(1000).subscribe(i => {
       this.cards.toArray()[index].setIsFlippedStatus(true);
       this.cardStack.push(this.cards.toArray()[index].info);
+      this.addToFullCardStack(this.cards.toArray()[index].info);
 
       Observable.timer(1000).subscribe(i => {
-        var index = this.getCurrentPlayer().getMove();
+        var index = this.getCurrentPlayer().getMove(this.fullCardStack, this.cardStack);
+
         this.cards.toArray()[index].setIsFlippedStatus(true);
         this.cardStack.push(this.cards.toArray()[index].info);
+        this.addToFullCardStack(this.cards.toArray()[index].info);
 
         // we have 2 open cards
         if (this.cardStack.length === 2) {
@@ -118,6 +167,7 @@ export class Game {
                 this.announceResult();
                 this.setBoardOverlay(true);
               } else {
+                this.removeCardsFromFullCardStack(this.cards.toArray()[index].info.name);
                 this.cardStack = [];
                 this.makeComputerMove();
               }
@@ -133,7 +183,6 @@ export class Game {
               this.setBoardOverlay(false);
             });
           }
-        } else {
         }
       });
     });
@@ -217,7 +266,8 @@ export class Game {
     this.board = new Board(this.boardSize);
     this.boardOverlay = false;
     this.cardStack = [];
-    
+    this.fullCardStack = [];
+
     this.leftCards = this.boardSize[0] * this.boardSize[1];
     this.currentPlayerIndex = 0;
     this.createPlayers();

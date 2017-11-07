@@ -21,15 +21,21 @@ export class Board {
     let cards = cardNames.map(n => ({
         name: n,
         isFlipped: false,
+        cardIndex: 0,
         url: `./assets/img/${n}.svg`
     }));
 
     this.shuffle(cards);
+
+    let index = 0;
     for(let i = 0; i < this.size[0]; i++) {
       this.board[i] = [];
       for (let j = 0; j < this.size[1]; j++) {
+        cards[0].cardIndex = index;
         this.board[i][j] = cards[0];
         cards.shift();
+
+        index++;
       }
     }
   }
