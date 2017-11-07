@@ -30,20 +30,7 @@ export class Game {
   private desiredStackSize = difficultyConverter[1];
 
   constructor(private appPreferences: AppPreferences, public alertCtrl: AlertController) {
-    this.appPreferences.fetch('size').then((res) => {
-      if(res != null){
-        this.boardSize = sizeConverter[parseInt(res)];
-      }
-
-    });
-
-    this.appPreferences.fetch('difficulty').then((res) => {
-      if (res != null) {
-        this.difficulty = parseInt(res);
-        this.desiredStackSize = difficultyConverter[parseInt(res)];
-      }
-      this.resetGame();
-    })
+    this.resetGame();
   }
 
   public getBoard() {
@@ -261,6 +248,24 @@ export class Game {
   }
 
   private resetGame() {
+    this.appPreferences.fetch('size').then((res) => {
+      if(res != null){
+        this.boardSize = sizeConverter[parseInt(res)];
+      }
+
+      this.appPreferences.fetch('difficulty').then((res) => {
+        if (res != null) {
+          this.difficulty = parseInt(res);
+          this.desiredStackSize = difficultyConverter[parseInt(res)];
+        }
+
+        this.resetState();
+      });
+
+    });
+  }
+
+  private resetState() {  
     this.board = new Board(this.boardSize);
     this.boardOverlay = false;
     this.cardStack = [];
