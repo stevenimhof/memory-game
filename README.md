@@ -1,7 +1,7 @@
 Memory Game
 =====================
 
-This is the memory game
+This game was built during the 'mobile application 1' course. Goal of this project was to get a better understanding of ionic and create a game.
 
 ## Using this project
 
@@ -19,6 +19,7 @@ $ ionic cordova run <PLATFORM> --livereload
 
 Supported Platforms:
 ```
+* iOS (use 'ios')
 * Android (use 'android')
 * Browser (use 'browser')
 
